@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 #REQUIREMENTS:
 #Python 3.x
@@ -25,12 +25,22 @@ if __name__ == "__main__":
     print(url_host("$1"))
 END
 }
+if locate "/bin/python" && locate "/bin/sshpass"
+then
 
 str_url_pass=$(call_python "$1");
 
-IFS=', ' read -ra arr_result_bash <<<$str_url_pass; declare -p a;
+IFS=', ' read -ra arr_result_bash <<<$str_url_pass; 
 
 echo "Host = "${arr_result_bash[0]};
 echo "Password = "${arr_result_bash[1]};
 
 sshpass -p ${arr_result_bash[1]} ssh -o StrictHostKeyChecking=no ${arr_result_bash[0]}
+
+read emp
+
+else
+
+    echo "Please make sure sshpass and python are installed before running this script."
+
+fi

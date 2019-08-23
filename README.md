@@ -1,1 +1,1 @@
-ProjectSRS_ssh_linker
+SRS_ssh_linker

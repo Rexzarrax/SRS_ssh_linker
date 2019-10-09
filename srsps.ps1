@@ -19,6 +19,7 @@ $str_url_ssh = $str_url_ssh.replace($str_uname,"")
 $str_url_ssh = $str_url_ssh.replace($str_host,"")
 
 $str_password = $str_url_ssh.replace("%3Bpassword%","")
+$str_password = $str_url_ssh.replace(";password=","")
 $str_password = $str_password.replace("@","")
 $str_password = $str_password.replace("/","")
 Write-Output "Password: "$str_password," "

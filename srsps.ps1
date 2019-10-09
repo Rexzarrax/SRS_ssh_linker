@@ -28,4 +28,11 @@ $str_combined = $str_uname+"@"+$str_host
 $command = 'df -h'
 $plinkpath = 'C:\Program Files\PuTTY\'
 
-Write-Output y | &($plinkpath + "plink.exe") -pw $str_password $str_combined $command
+try{
+    Write-Output y | &($plinkpath + "plink.exe") -pw $str_password $str_combined $command
+}
+Catch {
+    Write-Output "Double Click the password found, copy it and paste when prompted..."
+    ssh $str_combined
+}
+

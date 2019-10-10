@@ -6,26 +6,25 @@
 
 function call_python
 {
-python - << END
+python3 - << END
 import sys
 
-def url_host(str_input):
+def swinhost(str_input):
 
     int_arg_num = 1
     str_uname = str_input.lstrip("ssh://")[0:6]
     str_password = str_input.lstrip("ssh://"+str_uname+";password=").split("@ictencsvr")[0]
     str_server = str_input.split("@")[1].strip("/")
     str_locale = str_uname+"@"+str_server
-
     str_print = str_uname+"@"+str_server
     str_result = str_print+","+str_password
     return str_result
 
 if __name__ == "__main__":
-    print(url_host("$1"))
+    print(swinhost("$1"))
 END
 }
-if locate "/bin/python" && locate "/bin/sshpass"
+if (true)
 then
 
 str_url_pass=$(call_python "$1");

@@ -10,7 +10,7 @@ Write-Output "URL adjusted to: "$str_url_ssh," "
 
 $str_host = $str_url_ssh.split("@")[1]
 $str_host = $str_host.replace("/","")
-Write-Output "Host: ",$str_host," "
+Write-Output "Host found: ",$str_host," "
 
 $str_uname = $str_url_ssh.Substring(0,6)
 Write-Output "Uname found: ",$str_uname," "
@@ -18,21 +18,23 @@ Write-Output "Uname found: ",$str_uname," "
 $str_url_ssh = $str_url_ssh.replace($str_uname,"")
 $str_url_ssh = $str_url_ssh.replace($str_host,"")
 
-$str_password = $str_url_ssh.replace("%3Bpassword%","")
-$str_password = $str_url_ssh.replace(";password=","")
+$str_password = $str_url_ssh.replace("%3Bpassword%3D","")
+$str_password = $str_password.replace(";password=","")
 $str_password = $str_password.replace("@","")
 $str_password = $str_password.replace("/","")
-Write-Output "Password: "$str_password," "
+Write-Output "Password found: "$str_password, " "
 
 $str_combined = $str_uname+"@"+$str_host
 $command = 'df -h'
-$plinkpath = 'C:\Program Files\PuTTY\'
+$plinkpath = 'C:\Program Files\PuTTY\plink.exe"'
+Write-Output "Plink.exe used location: "$plinkpath, " "
 
 try{
-    Write-Output y | &($plinkpath + "plink.exe") -pw $str_password $str_combined $command
+    Write-Output y | &($plinkpath) -pw $str_password $str_combined $command
 }
 Catch {
-    Write-Output "Double Click the password found, copy it and paste when prompted..."
+    Set-Clipboard -Value $str_password
+    Write-Output "Password Sent to clipboard."
+    Write-Output "Paste(right click or ctrl-v) when prompted..."
     ssh $str_combined
 }
-

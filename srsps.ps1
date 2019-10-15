@@ -12,7 +12,7 @@ $str_host = $str_url_ssh.split("@")[1]
 $str_host = $str_host.replace("/","")
 Write-Output "Host found: ",$str_host," "
 
-$str_uname = $str_url_ssh.Substring(0,6)
+$str_uname = $str_url_ssh.split(";")[0]
 Write-Output "Uname found: ",$str_uname," "
 
 $str_url_ssh = $str_url_ssh.replace($str_uname,"")

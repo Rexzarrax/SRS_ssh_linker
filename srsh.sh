@@ -13,10 +13,12 @@ import sys
 def url_host(str_input):
 
     int_arg_num = 1
-    str_uname = str_input.lstrip("ssh://")[0:6]
+    str_uname = str_input.lstrip("ssh://")
     str_uname = str_uname.split(";")[0]
-    str_password = str_input.lstrip("ssh://"+str_uname+";password=").split("@ictencsvr")[0]
-    str_password = str_password.lstrip("%3Bpassword%3D")
+    str_uname = str_uname.split("3B")[0]
+    str_uname = str_uname.replace("%","")
+    str_password = str_input.split("%3Bpassword%3D")[1]
+    str_password = str_password.split("@")[0]
     str_server = str_input.split("@")[1].strip("/")
     str_locale = str_uname+"@"+str_server
 
@@ -29,22 +31,14 @@ if __name__ == "__main__":
 END
 }
 
-if (locate "/bin/python" && locate "/bin/sshpass") || (clear && echo "Please install Python and sshpass")
-then
-    echo "URL Collected"
-    str_url_pass=$(call_python "$1") || (clear && echo " " && echo "Please Give a ssh URL as first argument encapsulated with quotes" && exit 1);
+echo "URL Collected"
+str_url_pass=$(call_python "$1") || (clear && echo " " && echo "Please Give a ssh URL as first argument encapsulated with quotes" && exit 1);
 
-    IFS=', ' read -ra arr_result_bash <<<$str_url_pass; 
+IFS=', ' read -ra arr_result_bash <<<$str_url_pass; 
 
-    echo "Host = "${arr_result_bash[0]};
-    echo "Password = "${arr_result_bash[1]};
+echo "Host = "${arr_result_bash[0]};
+echo "Password = "${arr_result_bash[1]};
 
-    sshpass -p ${arr_result_bash[1]} ssh -o StrictHostKeyChecking=no ${arr_result_bash[0]}
+sshpass -p ${arr_result_bash[1]} ssh -o StrictHostKeyChecking=no ${arr_result_bash[0]}
 
-    read emp
-
-else
-
-    echo "Please make sure sshpass and python are installed before running this script."
-   
-fi
+read emp

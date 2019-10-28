@@ -6,6 +6,8 @@ param(
 
 Write-Output "URL recieved: "$str_url_ssh
 $str_url_ssh = $str_url_ssh.Replace("ssh://","")
+$str_url_ssh = $str_url_ssh.Replace("%3B",";")
+$str_url_ssh = $str_url_ssh.Replace("%3D","=")
 Write-Output "URL adjusted to: "$str_url_ssh," "
 
 $str_host = $str_url_ssh.split("@")[1]
